@@ -7,7 +7,7 @@ export default defineConfig({
 	server: {
 		proxy: {
 			"/api": {
-				target: "https://final-phi-khaki.vercel.app/?vercelToolbarCode=Zeh2CFIIanAJFLQ",
+				target: "https://final-six-beta.vercel.app/",
 			},
 		},
 	},

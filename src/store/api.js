@@ -1,4 +1,5 @@
-const BASE_URL = 'https://final-wheat-three.vercel.app';
+// api.js
+const BASE_URL = 'https://final-wheat-three.vercel.app/api/v1';
 
 const fetchWithConfig = async (endpoint, options = {}) => {
   const defaultOptions = {
@@ -8,26 +9,32 @@ const fetchWithConfig = async (endpoint, options = {}) => {
     },
   };
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
-    ...defaultOptions,
-    ...options,
-    headers: {
-      ...defaultOptions.headers,
-      ...options.headers,
-    },
-  });
+  // Clean endpoint to prevent double slashes
+  const cleanEndpoint = endpoint.startsWith('/') ? endpoint.slice(1) : endpoint;
 
-  if (!response.ok) {
-    const error = await response.json();
+  try {
+    const response = await fetch(`${BASE_URL}/${cleanEndpoint}`, {
+      ...defaultOptions,
+      ...options,
+      headers: {
+        ...defaultOptions.headers,
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({
+        message: `HTTP error! status: ${response.status}`
+      }));
+      throw new Error(errorData.message || 'Request failed');
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('API Request failed:', error);
     throw error;
   }
-
-  // For DELETE requests, we might not have a response body
-  if (options.method === 'DELETE') {
-    return null;
-  }
-
-  return response.json();
 };
 
 const api = {

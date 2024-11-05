@@ -9,10 +9,18 @@ const useGetTrendingContent = () => {
   useEffect(() => {
     const getTrendingContent = async () => {
       try {
-        const response = await api.get(`/${contentType}/trending`);
-        setTrendingContent(response.content);
+        const response = await api.get(`${contentType}/trending`);
+        
+        // Handle single movie response
+        if (response.success && response.content) {
+          // If you expect a single movie, wrap it in an array
+          setTrendingContent([response.content]);
+        } else {
+          throw new Error('Invalid response format');
+        }
       } catch (error) {
         console.error("Error fetching trending content:", error);
+        setTrendingContent(null);
       }
     };
 

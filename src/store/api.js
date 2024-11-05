@@ -1,5 +1,5 @@
 // api.js
-const BASE_URL = 'https://final-wheat-three.vercel.app';
+const BASE_URL = 'https://final-wheat-three.vercel.app/api/v1';
 
 const fetchWithConfig = async (endpoint, options = {}) => {
   const defaultOptions = {

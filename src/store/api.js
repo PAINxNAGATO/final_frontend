@@ -6,7 +6,7 @@ const API_BASE_URL = 'https://final-six-beta.vercel.app';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  // any other Axios settings you need
+  withCredentials: true,
 });
 
 export default api;

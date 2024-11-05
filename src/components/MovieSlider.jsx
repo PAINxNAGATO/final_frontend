@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useContentStore } from "../store/content";
-import axios from "axios";
+import api from "../store/api";
 import { Link } from "react-router-dom";
 import { SMALL_IMG_BASE_URL } from "../utils/constants";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -18,8 +18,12 @@ const MovieSlider = ({ category }) => {
 
 	useEffect(() => {
 		const getContent = async () => {
-			const res = await axios.get(`/api/v1/${contentType}/${category}`);
-			setContent(res.data.content);
+			try {
+				const res = await api.get(`/api/v1/${contentType}/${category}`);
+				setContent(res.data.content);
+			} catch (error) {
+				console.error("Error fetching content:", error);
+			}
 		};
 
 		getContent();
@@ -83,4 +87,5 @@ const MovieSlider = ({ category }) => {
 		</div>
 	);
 };
+
 export default MovieSlider;
